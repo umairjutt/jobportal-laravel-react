@@ -1,0 +1,65 @@
+services:
+  backend:
+    build: ./backend
+    ports: ["8000:8000"]
+    volumes: ["./backend:/var/www/html"]
+    depends_on:
+      mysql: {condition: service_healthy}
+      redis: {condition: service_started}
+
+  reverb:
+    build: ./backend
+    command: php artisan reverb:start --host=0.0.0.0 --port=8080
+    ports: ["8080:8080"]
+    volumes: ["./backend:/var/www/html"]
+    depends_on: [redis]
+
+  queue:
+    build: ./backend
+    command: php artisan queue:work redis --tries=3
+    volumes: ["./backend:/var/www/html"]
+    depends_on: [redis, mysql]
+
+  frontend:
+    build: ./frontend
+    ports: ["5173:5173"]
+    volumes: ["./frontend:/app", "/app/node_modules"]
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_REVERB_HOST=localhost
+      - VITE_REVERB_PORT=8080
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: jobs
+      MYSQL_USER: jobs
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
+    ports: ["3308:3306"]
+    volumes: [mysql_data:/var/lib/mysql]
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootsecret"]
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6382:6379"]
+
+  mailpit:
+    image: axllent/mailpit
+    ports: ["8025:8025", "1025:1025"]
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: secretsecret
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [minio_data:/data]
+
+volumes:
+  mysql_data:
+  minio_data:
