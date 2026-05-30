@@ -14,7 +14,7 @@ class Job extends Model
     protected $fillable = [
         'company_id', 'title', 'slug', 'description', 'location', 'remote',
         'employment_type', 'salary_min', 'salary_max', 'currency',
-        'skills', 'experience_level', 'is_active', 'featured',
+        'skills', 'experience_level', 'is_active', 'featured', 'views_count',
     ];
 
     protected $casts = [
@@ -22,6 +22,7 @@ class Job extends Model
         'remote' => 'boolean',
         'is_active' => 'boolean',
         'featured' => 'boolean',
+        'views_count' => 'integer',
     ];
 
     public function company()

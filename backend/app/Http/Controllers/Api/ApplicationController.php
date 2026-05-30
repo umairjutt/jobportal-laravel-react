@@ -5,9 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Notifications\ApplicationStatusChanged;
+use App\Notifications\NewApplicationNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+/**
+ * @group Applications
+ *
+ * Candidates apply to jobs; recruiters review and move applicants through the
+ * pipeline. Status changes emit realtime notifications.
+ * @authenticated
+ */
 class ApplicationController extends Controller
 {
     public function apply(Request $request, Job $job): JsonResponse
@@ -32,6 +41,9 @@ class ApplicationController extends Controller
             'resume_path' => $data['resume_path'] ?? optional($request->user()->candidateProfile)->resume_path,
         ]);
 
+        $recruiter = $job->company->owner;
+        $recruiter?->notify(new NewApplicationNotification($app));
+
         return response()->json($app, 201);
     }
 
@@ -53,8 +65,15 @@ class ApplicationController extends Controller
         abort_unless($application->job->company->owner_id === $request->user()->id, 403);
         $data = $request->validate(['stage' => ['required', 'in:' . implode(',', JobApplication::STAGES)]]);
 
+        $from = $application->stage;
         $application->stage = $data['stage'];
         $application->save();
+
+        if ($from !== $application->stage) {
+            $application->candidate?->notify(
+                new ApplicationStatusChanged($application, $from, $application->stage)
+            );
+        }
 
         return response()->json($application);
     }

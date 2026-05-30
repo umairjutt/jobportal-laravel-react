@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->throttleApi();
+        $middleware->prependToGroup('api', App\Http\Middleware\RequestId::class);
         $middleware->alias([
             'role' => Spatie\Permission\Middleware\RoleMiddleware::class,
         ]);

@@ -1,5 +1,14 @@
 # Job Portal — Laravel 11 + React 18 (Flagship)
 
+[![CI](https://github.com/your-username/jobportal-laravel-react/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/jobportal-laravel-react/actions/workflows/ci.yml)
+![PHP 8.3](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
+![Laravel 11](https://img.shields.io/badge/Laravel-11-FF2D20?logo=laravel&logoColor=white)
+![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+![PHPStan level 5](https://img.shields.io/badge/PHPStan-level%205-2A5C8A)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
+> Replace `your-username` in the badge URLs after you push the repo to GitHub.
+
 A full-stack job board with **3 roles** (Candidate, Recruiter, Admin), **realtime recruiter–candidate chat** via Laravel Reverb WebSockets, resume uploads, application pipelines, and a modern shadcn/ui frontend.
 
 [Live demo (TODO)](https://example.com) · [Video walkthrough (TODO)](https://example.com)
@@ -8,12 +17,17 @@ A full-stack job board with **3 roles** (Candidate, Recruiter, Admin), **realtim
 
 - **Monorepo**: `backend/` (Laravel 11 API) + `frontend/` (React 18 + TS + Vite)
 - **3-role RBAC** with Sanctum tokens and Spatie permissions
-- **Realtime chat** between recruiter ↔ candidate using **Laravel Reverb** WebSockets and the official `laravel-echo` client
+- **Realtime chat** between recruiter ↔ candidate using **Laravel Reverb** WebSockets and the official `laravel-echo` client — with **presence (online/offline), typing indicators, and read receipts** (`UserTyping` + `MessagesRead` broadcast events on a presence channel)
+- **Laravel Notifications** (database + broadcast) for new application / new message / status change, surfaced as a live unread badge via `GET /api/notifications`
+- **Recruiter analytics** — job views, application volume, and an applied→hired conversion funnel at `GET /api/analytics/dashboard` with a dashboard page
 - **Resume uploads** to S3-compatible storage (MinIO in dev, S3 in prod)
 - **Application pipeline** (Kanban) — applied -> screening -> interview -> offer -> hired/rejected
 - **Full-text job search** with MySQL fulltext indexes
-- **Email notifications** (Mailpit in dev) — new application, new message, status changes
-- **shadcn/ui design system** + dark mode + mobile responsive
+- **OpenAPI docs** via Scribe at `/docs/api`
+- **Observability** — `X-Request-Id` middleware, structured JSON logs, `/api/metrics`
+- **shadcn/ui design system** + **light/dark theme toggle** + mobile responsive
+- **Frontend hardening** — TanStack Query with optimistic mutations, a top-level error boundary
+- **CI quality gates** — Pint + Larastan (level 5) + Pest (backend), Vitest + tsc (frontend)
 - **Pest** tests on the backend, **Vitest** on the frontend
 
 ## Architecture

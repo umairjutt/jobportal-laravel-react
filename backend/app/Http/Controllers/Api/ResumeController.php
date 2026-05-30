@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+/**
+ * @group Resumes
+ *
+ * Upload and retrieve candidate resumes (stored on S3-compatible storage).
+ * @authenticated
+ */
 class ResumeController extends Controller
 {
     public function upload(Request $request): JsonResponse

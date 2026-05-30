@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * @group Auth
+ *
+ * Candidate / recruiter registration and login. Tokens are Sanctum bearer tokens.
+ */
 class AuthController extends Controller
 {
     public function register(Request $request): JsonResponse

@@ -8,6 +8,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * @group Jobs
+ *
+ * Public job search plus recruiter job management.
+ */
 class JobController extends Controller
 {
     public function index(Request $request): JsonResponse
@@ -34,6 +39,10 @@ class JobController extends Controller
     public function show(string $slug): JsonResponse
     {
         $job = Job::with('company')->where('slug', $slug)->firstOrFail();
+
+        // Atomic view increment; feeds the recruiter analytics funnel.
+        Job::whereKey($job->id)->increment('views_count');
+
         return response()->json($job);
     }
 
