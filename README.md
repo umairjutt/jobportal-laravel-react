@@ -1,17 +1,16 @@
-# Job Portal — Laravel 11 + React 18 (Flagship)
+# Job Portal — Laravel 11 + React 18
 
-[![CI](https://github.com/your-username/jobportal-laravel-react/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/jobportal-laravel-react/actions/workflows/ci.yml)
+[CI results](https://github.com/umairjutt/jobportal-laravel-react/actions) · [Engineering guide](PORTFOLIO.md)
+
+> **Status:** Development portfolio project covering candidate and recruiter workflows. Backend setup verification and complete browser journeys remain in progress.
+
+[![CI](https://github.com/umairjutt/jobportal-laravel-react/actions/workflows/ci.yml/badge.svg)](https://github.com/umairjutt/jobportal-laravel-react/actions/workflows/ci.yml)
 ![PHP 8.3](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
 ![Laravel 11](https://img.shields.io/badge/Laravel-11-FF2D20?logo=laravel&logoColor=white)
 ![React 18](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
-![PHPStan level 5](https://img.shields.io/badge/PHPStan-level%205-2A5C8A)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-> Replace `your-username` in the badge URLs after you push the repo to GitHub.
-
-A full-stack job board with **3 roles** (Candidate, Recruiter, Admin), **realtime recruiter–candidate chat** via Laravel Reverb WebSockets, resume uploads, application pipelines, and a modern shadcn/ui frontend.
-
-[Live demo (TODO)](https://example.com) · [Video walkthrough (TODO)](https://example.com)
+A full-stack job board with **3 roles** (Candidate, Recruiter, Admin), **realtime recruiter–candidate chat** via Laravel Reverb WebSockets, resume uploads, application pipelines, and a React/TypeScript frontend styled with Tailwind.
 
 ## What this demonstrates
 
@@ -25,7 +24,7 @@ A full-stack job board with **3 roles** (Candidate, Recruiter, Admin), **realtim
 - **Full-text job search** with MySQL fulltext indexes
 - **OpenAPI docs** via Scribe at `/docs/api`
 - **Observability** — `X-Request-Id` middleware, structured JSON logs, `/api/metrics`
-- **shadcn/ui design system** + **light/dark theme toggle** + mobile responsive
+- **Tailwind-based UI** + **light/dark theme toggle** + mobile responsive
 - **Frontend hardening** — TanStack Query with optimistic mutations, a top-level error boundary
 - **CI quality gates** — Pint + Larastan (level 5) + Pest (backend), Vitest + tsc (frontend)
 - **Pest** tests on the backend, **Vitest** on the frontend
@@ -34,7 +33,7 @@ A full-stack job board with **3 roles** (Candidate, Recruiter, Admin), **realtim
 
 ```mermaid
 flowchart TB
-    react[React 18 SPA<br/>Vite + TS + shadcn] -->|REST| api[Laravel 11 API]
+    react[React 18 SPA<br/>Vite + TS + Tailwind] -->|REST| api[Laravel 11 API]
     react -.WebSocket via Echo.-> reverb[Laravel Reverb]
     api --> mysql[(MySQL)]
     api --> redis[(Redis: cache + queue)]
@@ -60,7 +59,7 @@ flowchart TB
 ## Quick start
 
 ```bash
-git clone <repo>
+git clone https://github.com/umairjutt/jobportal-laravel-react.git
 cd jobportal-laravel-react
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
@@ -86,7 +85,7 @@ Seeded users:
 - Realtime chat broadcasting: [backend/app/Events/MessageSent.php](backend/app/Events/MessageSent.php) + private channel auth in [backend/routes/channels.php](backend/routes/channels.php)
 - Frontend Echo wiring: [frontend/src/lib/echo.ts](frontend/src/lib/echo.ts)
 - Kanban DnD pipeline: [frontend/src/pages/recruiter/ApplicantsKanban.tsx](frontend/src/pages/recruiter/ApplicantsKanban.tsx)
-- Resume signed-URL upload: [backend/app/Http/Controllers/Api/ResumeController.php](backend/app/Http/Controllers/Api/ResumeController.php)
+- Resume upload: [backend/app/Http/Controllers/Api/ResumeController.php](backend/app/Http/Controllers/Api/ResumeController.php)
 
 ## Tests
 
@@ -97,7 +96,7 @@ docker compose exec frontend npm test
 
 ## Deploy
 
-See [DEPLOY.md](DEPLOY.md). Railway-friendly (backend + Reverb as separate services).
+The Compose configuration is for local development; production deployment documentation remains to be completed.
 
 <!-- ownership:author -->
 ---
@@ -106,4 +105,4 @@ See [DEPLOY.md](DEPLOY.md). Railway-friendly (backend + Reverb as separate servi
 
 **Umair** &mdash; [@umairjutt](https://github.com/umairjutt)
 
-Designed, built and maintained by me. Licensed under the [MIT License](LICENSE).
+Maintained by [Umair Jutt](https://github.com/umairjutt). See [LICENSE](LICENSE) for repository licensing.
